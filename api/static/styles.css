@@ -145,22 +145,172 @@ button:active { transform: translateY(0); }
 .tab-content.active { display: block; }
 
 /* ---------- TREE CONTAINER ---------- */
-.tree-container {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 20px;
-    border-radius: 12px;
-    margin: 24px 0;
-    overflow-x: auto;
-    border: 2px solid var(--illini-blue);
-    box-shadow: inset 0 2px 6px rgba(19, 41, 75, 0.15);
-    width: 100%;
+/* ---------- ENHANCED TREE STYLES ---------- */
+.tree-wrapper {
+    margin: 30px 0;
 }
 
-.tree-container svg {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    display: block;
+.sentence-label {
+    background: linear-gradient(135deg, var(--illini-blue), #1e3b6b);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px 12px 0 0;
+    font-weight: 700;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(19, 41, 75, 0.2);
+}
+
+.sentence-label svg {
+    flex-shrink: 0;
+}
+
+.tree-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 30px;
+    border-radius: 0 0 12px 12px;
+    overflow-x: auto;
+    border: 2px solid var(--illini-blue);
+    border-top: none;
+    box-shadow: 0 6px 20px rgba(19, 41, 75, 0.1);
+}
+
+.tree-content {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-width: max-content;
+}
+
+.tree-branch {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    margin: 8px 0;
+}
+
+.tree-connector {
+    height: 2px;
+    background: linear-gradient(90deg, var(--illini-blue), transparent);
+    margin: 20px 0;
+    border-radius: 2px;
+    opacity: 0.3;
+}
+
+.tree-node-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 18px;
+    border-left: 5px solid var(--illini-blue);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-left: 12px;
+    min-width: 200px;
+    position: relative;
+}
+
+.tree-node-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(19, 41, 75, 0.2);
+}
+
+.tree-node-card.root-node {
+    border-left-width: 6px;
+    background: linear-gradient(135deg, #fff9f0, #ffffff);
+    box-shadow: 0 4px 16px rgba(255, 95, 5, 0.2);
+}
+
+.node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.node-token {
+    font-weight: 800;
+    color: var(--illini-blue);
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.node-pos {
+    background: var(--illini-blue);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.node-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.node-dep {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+}
+
+.node-head {
+    color: #64748b;
+    font-weight: 600;
+    padding: 4px 8px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.8rem;
+}
+
+.node-head.root-label {
+    background: linear-gradient(135deg, var(--illini-orange), #ff7b3a);
+    color: white;
+    font-weight: 800;
+    padding: 5px 12px;
+    letter-spacing: 1px;
+}
+
+.tree-children {
+    margin-left: 30px;
+    border-left: 2px dashed rgba(19, 41, 75, 0.15);
+    padding-left: 20px;
+    margin-top: 12px;
+}
+
+/* Responsive tree adjustments */
+@media (max-width: 768px) {
+    .tree-container {
+        padding: 20px;
+    }
+    
+    .tree-node-card {
+        min-width: 160px;
+        padding: 12px 14px;
+    }
+    
+    .node-token {
+        font-size: 1rem;
+    }
+    
+    .tree-children {
+        margin-left: 15px;
+        padding-left: 10px;
+    }
+    
+    .tree-connector {
+        display: none;
+    }
 }
 
 /* ---------- SENTENCE LABEL ---------- */

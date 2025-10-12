@@ -1,24 +1,37 @@
 from collections import defaultdict
 from flask import Flask, render_template, request
 import spacy
-import nltk
-from nltk import Tree
-from io import StringIO
-import svgwrite
 
-nltk.download('stopwords', quiet=True)
-from nltk.corpus import stopwords
-
-NLP = spacy.load('en_core_web_sm')
-app = Flask(__name__)
-if not spacy.util.is_package("en_core_web_sm"):
+# Load spaCy model
+try:
+    NLP = spacy.load('en_core_web_sm')
+except OSError:
+    import os
     os.system("python -m spacy download en_core_web_sm")
+    NLP = spacy.load('en_core_web_sm')
+
+app = Flask(__name__)
+
 # ----------------------------
 # Constants
 # ----------------------------
 POS_SCORES = {
     "PROPN": 5, "NOUN": 5,
     "VERB": 4, "ADJ": 4
+}
+
+# Simple stopwords list (no NLTK needed)
+STOPWORDS = {
+    'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 
+    'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 
+    'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 
+    'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 
+    'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 
+    'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 
+    'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 
+    'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 
+    'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 
+    'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once'
 }
 
 # ----------------------------
@@ -31,25 +44,10 @@ def render_keywords_html(ranked):
     
     cards = []
     for k in ranked[:12]:
-        roles_html = "".join(f'<span class="role-badge">{role}</span>' for role in k.get("roles", []))
-        constraints = k.get("constraints", [])[:3]
-        constraints_html = ""
-        
-        if constraints:
-            constraint_items = "".join(
-                f'<div class="constraint-item"><span class="constraint-type">{c["type"]}</span><span>{c["text"]}</span></div>'
-                for c in constraints
-            )
-            constraints_html = f'''<div class="keyword-constraints">
-                <div class="constraint-label">Related Context:</div>
-                <div class="constraint-list">{constraint_items}</div>
-            </div>'''
-        
         cards.append(f'''<div class="keyword-card">
             <div class="keyword-word">{k["word"]}</div>
             <div class="keyword-score">Score: {k["score"]:.2f}</div>
-            {f'<div class="keyword-roles">{roles_html}</div>' if roles_html else ''}
-            {constraints_html}
+            <div class="keyword-pos">POS: {k["pos"]}</div>
         </div>''')
     
     return f'''<div class="keyword-section">
@@ -92,163 +90,92 @@ def render_tokens_html(tokens):
     
     return f'''<div class="hierarchy-section">
         <div class="hierarchy-header">
-            <h3>Token Generated</h3>
+            <h3>Tokens Generated</h3>
             <span class="hierarchy-count">{len(tokens)}</span>
         </div>
         <div class="token-grid">{"".join(token_items)}</div>
     </div>'''
 
 # ----------------------------
-# Tree Building Functions
+# Enhanced Tree Building
 # ----------------------------
-def _to_nltk_tree(token):
-    """Convert spaCy dependency tree to NLTK Tree"""
-    children = sorted(token.children, key=lambda x: x.i)
-    if not children:
-        return token.text
-    
-    tree_children = []
-    for child in children:
-        tree_children.append(_to_nltk_tree(child))
-    
-    return Tree(token.pos_, [token.text] + tree_children)
-
-def _tree_to_svg(tree, x=0, y=0, level=0, dwg=None, parent_center=None):
-    """Recursively convert NLTK tree to responsive SVG using svgwrite."""
-    node_height = 40
-    level_height = 80
-    padding = 10
-
-    # Initialize drawing on first call
-    if dwg is None:
-        dwg = svgwrite.Drawing(profile='tiny')
-        dwg.attribs['preserveAspectRatio'] = 'xMidYMin meet'
-
-    # Handle leaf node (word)
-    if isinstance(tree, str):
-        width = len(tree) * 8 + padding * 2
-        center_x = x + width / 2
-        center_y = y + node_height / 2
-
-        # Node rectangle
-        dwg.add(dwg.rect(
-            insert=(x, y),
-            size=(width, node_height),
-            rx=5, ry=5,
-            fill="white",
-            stroke="#667eea",
-            stroke_width=2
-        ))
-
-        # Node text
-        dwg.add(dwg.text(
-            tree,
-            insert=(center_x, center_y + 5),
-            text_anchor="middle",
-            font_size="14px",
-            fill="#2d3748"
-        ))
-
-        # Connect to parent if applicable
-        if parent_center:
-            dwg.add(dwg.line(
-                start=parent_center,
-                end=(center_x, y),
-                stroke="#aaa",
-                stroke_width=2
-            ))
-
-        return dwg, width, center_x
-
-    # Internal node (phrase)
-    label = tree.label()
-    children = tree
-
-    total_width = 0
-    child_centers = []
-    for child in children:
-        dwg, child_width, child_center_x = _tree_to_svg(
-            child,
-            x + total_width,
-            y + level_height,
-            level + 1,
-            dwg=dwg,
-            parent_center=None  # connect after parent drawn
-        )
-        child_centers.append((child_center_x, y + level_height))
-        total_width += child_width + padding
-
-    total_width -= padding  # remove trailing padding
-
-    # Parent node
-    label_width = len(label) * 10 + padding * 2
-    parent_x = x + (total_width - label_width) / 2
-    parent_center_x = parent_x + label_width / 2
-    parent_center_y = y + node_height / 2
-
-    # Draw parent box
-    dwg.add(dwg.rect(
-        insert=(parent_x, y),
-        size=(label_width, node_height),
-        rx=5, ry=5,
-        fill="#667eea",
-        stroke="#5568d3",
-        stroke_width=2
-    ))
-
-    dwg.add(dwg.text(
-        label,
-        insert=(parent_center_x, parent_center_y + 5),
-        text_anchor="middle",
-        font_size="14px",
-        font_weight="bold",
-        fill="white"
-    ))
-
-    # Draw connections
-    for cx, cy in child_centers:
-        dwg.add(dwg.line(
-            start=(parent_center_x, y + node_height),
-            end=(cx, cy),
-            stroke="#aaa",
-            stroke_width=2
-        ))
-
-    return dwg, total_width, parent_center_x
-
-def build_constituent_trees(doc):
-    """Generate responsive SVG constituent trees for each sentence."""
+def build_dependency_tree_html(doc):
+    """Generate beautiful HTML dependency trees for each sentence"""
     trees = []
-
+    
     for sent in doc.sents:
-        # Find root of the sentence
-        root = [token for token in sent if token.head == token][0]
-        nltk_tree = Tree('S', [_to_nltk_tree(root)])
-
-        # Generate SVG recursively
-        dwg, width, _ = _tree_to_svg(nltk_tree, x=20, y=20)
-
-        # Compute approximate height based on tree depth
-        def get_depth(t):
-            if isinstance(t, str):
-                return 1
-            return 1 + max([get_depth(child) for child in t] or [0])
-
-        depth = get_depth(nltk_tree)
-        height = depth * 80 + 100  # scalable height
-
-        # Add responsive attributes (width 100%, no explicit height)
-        dwg.viewbox(0, 0, width + 60, height)
-        dwg.attribs['width'] = '100%'  # scales to container width
-        # DO NOT set height here — CSS will handle it
-
-        svg_html = dwg.tostring()
-
+        # Build simple nested list structure
+        root = [token for token in sent if token.head == token]
+        if not root:
+            continue
+        root = root[0]
+        
+        def get_dep_color(dep):
+            """Assign colors based on dependency type"""
+            colors = {
+                'nsubj': '#667eea', 'ROOT': '#f093fb', 'dobj': '#4facfe',
+                'prep': '#43e97b', 'pobj': '#38f9d7', 'det': '#fa709a',
+                'amod': '#fee140', 'advmod': '#30cfd0', 'aux': '#a8edea',
+                'compound': '#fbc2eb', 'conj': '#f6d365', 'cc': '#fda085'
+            }
+            return colors.get(dep, '#94a3b8')
+        
+        def build_tree_recursive(token, level=0):
+            children = sorted([child for child in token.children], key=lambda x: x.i)
+            
+            dep_color = get_dep_color(token.dep_)
+            is_root = token.dep_ == 'ROOT'
+            
+            # Build node with visual connector
+            html = '<div class="tree-branch">'
+            
+            if level > 0:
+                html += f'<div class="tree-connector" style="width: {level * 30}px;"></div>'
+            
+            html += f'''<div class="tree-node-card {'root-node' if is_root else ''}" style="border-left-color: {dep_color};">
+                <div class="node-header">
+                    <span class="node-token">{token.text}</span>
+                    <span class="node-pos" style="background: {dep_color};">{token.pos_}</span>
+                </div>
+                <div class="node-meta">
+                    <span class="node-dep" style="color: {dep_color};">
+                        <svg width="12" height="12" viewBox="0 0 12 12" style="margin-right: 4px;">
+                            <circle cx="6" cy="6" r="4" fill="{dep_color}"/>
+                        </svg>
+                        {token.dep_}
+                    </span>
+                    {f'<span class="node-head">→ {token.head.text}</span>' if not is_root else '<span class="node-head root-label">ROOT</span>'}
+                </div>
+            </div>'''
+            
+            html += '</div>'
+            
+            # Recursively add children
+            if children:
+                html += '<div class="tree-children">'
+                for child in children:
+                    html += build_tree_recursive(child, level + 1)
+                html += '</div>'
+            
+            return html
+        
+        tree_html = f'''<div class="tree-wrapper">
+            <div class="sentence-label">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                {sent.text}
+            </div>
+            <div class="tree-container">
+                <div class="tree-content">{build_tree_recursive(root)}</div>
+            </div>
+        </div>'''
+        
         trees.append({
             "sentence": sent.text,
-            "html": svg_html
+            "html": tree_html
         })
-
+    
     return trees
 
 # ----------------------------
@@ -256,23 +183,32 @@ def build_constituent_trees(doc):
 # ----------------------------
 def identify_keywords(doc):
     """Extract and rank keywords from document"""
-    keyword_map = defaultdict(lambda: {"score": 0, "roles": set(), "constraints": []})
+    keyword_map = defaultdict(lambda: {"score": 0, "pos": ""})
     
     for token in doc:
-        if token.is_punct or token.is_stop or not token.is_alpha:
+        if token.is_punct or token.is_space:
             continue
+        
         text = token.text.lower()
+        
+        # Skip stopwords
+        if text in STOPWORDS:
+            continue
+            
+        if not token.is_alpha:
+            continue
+            
         score = POS_SCORES.get(token.pos_, 0)
-        keyword_map[text]["score"] += score
+        if score > 0:
+            keyword_map[text]["score"] += score
+            keyword_map[text]["pos"] = token.pos_
     
     final_keywords = []
     for text, data in keyword_map.items():
-        unique_constraints = list({c["text"]: c for c in data["constraints"]}.values())
         kw = {
             "word": text, 
             "score": data["score"], 
-            "roles": list(data["roles"]), 
-            "constraints": unique_constraints
+            "pos": data["pos"]
         }
         final_keywords.append(kw)
     
@@ -293,7 +229,7 @@ def parse_text(text):
         {
             "text": e.text, 
             "label": e.label_, 
-            "description": spacy.explain(e.label_),
+            "description": spacy.explain(e.label_) or e.label_,
             "start": e.start_char, 
             "end": e.end_char
         } 
@@ -312,13 +248,13 @@ def parse_text(text):
         for t in doc
     ]
     
-    trees = build_constituent_trees(doc)
+    trees = build_dependency_tree_html(doc)
     keywords = identify_keywords(doc)
     
     return {
         "entities": entities,
         "tokens": tokens,
-        "constituent_trees": trees,
+        "dependency_trees": trees,
         "keyword_analysis": keywords,
         "keywords_html": render_keywords_html(keywords["ranked_keywords"]),
         "tokens_html": render_tokens_html(tokens)
@@ -330,25 +266,25 @@ def parse_text(text):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        resume_text = request.form.get('text', '').strip()
+        text_input = request.form.get('text', '').strip()
         
-        if not resume_text:
-            return render_template('index.html', error="No text provided.", input_text=resume_text)
+        if not text_input:
+            return render_template('index.html', error="No text provided.", input_text=text_input)
         
         try:
-            parsed_data = parse_text(resume_text)
+            parsed_data = parse_text(text_input)
             return render_template(
                 'index.html', 
                 parsed_data=parsed_data, 
-                input_text=resume_text, 
-                trees_html=parsed_data["constituent_trees"],
+                input_text=text_input, 
+                trees_html=parsed_data["dependency_trees"],
                 keywords_html=parsed_data["keywords_html"],
                 tokens_html=parsed_data["tokens_html"]
             )
         except Exception as e:
-            return render_template('index.html', error=f"Parsing failed: {e}", input_text=resume_text)
+            return render_template('index.html', error=f"Parsing failed: {e}", input_text=text_input)
     
     return render_template('index.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natural Language Parser - Constituent Tree</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<script>
+function showTab(tabName, elem) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    elem.classList.add('active');
+}
+</script>
+
+<div class="main-container">
+    <div class="header">
+        <h1>Natural Language Parser</h1>
+        <p>A web-based linguistic analysis tool powered by spaCy and NLTK. 
+        It generates visual constituency trees, ranks key terms, and provides 
+        detailed token-level data including lemmas, dependencies, and entities.</p>
+    </div>
+
+    <div class="container">
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="input-section">
+                <label for="text-input">Enter Text to Parse</label>
+                <textarea id="text-input" name="text" placeholder="Type or paste your text here..." required>{% if input_text %}{{ input_text }}{% endif %}</textarea>
+            </div>
+            <button type="submit">Parse Text</button>
+        </form>
+
+        {% if trees_html %}
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('trees',this)">Constituent Trees</button>
+            <button class="tab" onclick="showTab('keywords',this)">Keywords</button>
+            <button class="tab" onclick="showTab('tokens',this)">Tokens</button>
+        </div>
+
+        <div id="trees" class="tab-content active">
+            {% for t in trees_html %}
+            <div class="tree-container">
+                <div class="sentence-label">Sentence: {{ t.sentence }}</div>
+                <div class="tree">{{ t.html | safe }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="keywords" class="tab-content">
+            {{ keywords_html | safe }}
+        </div>
+
+        <div id="tokens" class="tab-content">
+            {{ tokens_html | safe }}
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 
+                5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <p>Enter text above and click <strong>"Parse Text"</strong> to begin analysis.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

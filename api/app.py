@@ -11,7 +11,7 @@ nltk.download('averaged_perceptron_tagger')
 app = Flask(__name__)
 
 # -------------------- Load Database -------------------- #
-with open("api\construction_database.json", "r") as f:
+with open("api/construction_database.json", "r") as f:
     database = json.load(f)
 
 # -------------------- Helper Data -------------------- #

@@ -7,6 +7,7 @@ from nltk import word_tokenize, pos_tag
 
 # -------------------- NLTK Setup -------------------- #
 nltk.download('punkt')
+nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger')
 
 app = Flask(__name__)

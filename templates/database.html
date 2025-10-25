@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Construction Database | NLP Construction Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <h1>Construction Hazard Database</h1>
+      <p class="subtitle">Displaying {{ data|length }} records from field safety logs</p>
+      <nav>
+        <a href="{{ url_for('home') }}" class="btn-back">← Back to NLP Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="database container">
+    <div class="card-grid">
+      {% for record in data %}
+      <div class="hazard-card">
+        <div class="card-header">
+          <h2>{{ record["activity"] }}</h2>
+          <span class="tag">{{ record["hazardType"]|capitalize }}</span>
+        </div>
+        <p class="description">{{ record["description"] }}</p>
+
+        <div class="card-details">
+          <p><strong>Location:</strong> {{ record["location"] }}</p>
+          <p><strong>Week:</strong> {{ record["week"] }}</p>
+          <p><strong>Hazard:</strong> {{ record["hazard"] }}</p>
+          <p><strong>Timeline:</strong> {{ record["timeline"] }}</p>
+        </div>
+
+        <div class="measures">
+          <strong>Safety Measures:</strong>
+          <ul>
+            {% for m in record["measures"] %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="page-footer">
+    <p>© 2025 NLP Construction Demo — Flask + NLTK</p>
+  </footer>
+</body>
+</html>

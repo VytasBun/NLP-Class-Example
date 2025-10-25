@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NLP Construction Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <h1>NLP Construction Demo</h1>
+      <p class="subtitle">Enter a construction-related description and extract key nouns for hazard lookup</p>
+      <nav>
+        <a href="{{ url_for('database_view') }}" class="btn-back">View Full Database →</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="input-section">
+      <div class="hazard-card">
+        <h2>Search Construction Hazards</h2>
+        <form method="POST" class="nlp-form">
+          <input type="text" name="user_input" value="{{ user_input }}" placeholder="Example: Workers installing panels in zone A during third week" required>
+          <button type="submit">Analyze & Search</button>
+        </form>
+
+        {% if keywords %}
+        <div class="results">
+          <h3>🧠 Extracted Nouns:</h3>
+          <ul>
+            {% for k in keywords %}
+              <li>{{ k }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if restrictions %}
+        <div class="results restrictions">
+          <h3>📋 Restrictions:</h3>
+          <ul>
+            {% if restrictions.location %}
+              <li><strong>Location:</strong> {{ restrictions.location }}</li>
+            {% endif %}
+            {% if restrictions.week %}
+              <li><strong>Week:</strong> {{ restrictions.week }}</li>
+            {% endif %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if results %}
+        <div class="results">
+          <h3>🔍 Matching Hazards:</h3>
+          {% for item in results %}
+          <div class="hazard-card">
+        <div class="card-header">
+          <h2>{{ item["activity"] }}</h2>
+          <span class="tag">{{ item["hazardType"]|capitalize }}</span>
+        </div>
+        <p class="description">{{ item["description"] }}</p>
+
+        <div class="card-details">
+          <p><strong>Location:</strong> {{ item["location"] }}</p>
+          <p><strong>Week:</strong> {{ item["week"] }}</p>
+          <p><strong>Hazard:</strong> {{ item["hazard"] }}</p>
+          <p><strong>Timeline:</strong> {{ item["timeline"] }}</p>
+        </div>
+
+        <div class="measures">
+          <strong>Safety Measures:</strong>
+          <ul>
+            {% for m in item["measures"] %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+          {% endfor %}
+        </div>
+        {% elif user_input %}
+        <div class="results">
+          <p>No relevant hazards found for your search.</p>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>© 2025 NLP Construction Demo — Flask + NLTK</p>
+  </footer>
+</body>
+</html>

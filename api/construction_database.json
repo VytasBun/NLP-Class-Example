@@ -33,17 +33,6 @@
         "timeline": "Week 1-2"
     },
     {
-        "id": 4,
-        "location": "Second floor",
-        "activity": "Masonry work",
-        "week": 3,
-        "hazard": "Material stacking",
-        "hazardType": "struck by object",
-        "description": "Materials stacked too close to working area",
-        "measures": ["Reorganize material storage", "Establish clear work zones", "Use barriers"],
-        "timeline": "Week 3"
-    },
-    {
         "id": 5,
         "location": "Basement",
         "activity": "Foundation work",
@@ -88,17 +77,6 @@
         "timeline": "Week 4-5"
     },
     {
-        "id": 9,
-        "location": "Main entrance",
-        "activity": "Scaffolding erection",
-        "week": 2,
-        "hazard": "Scaffold collapse",
-        "hazardType": "collapse",
-        "description": "Improperly assembled scaffolding at entrance",
-        "measures": ["Conduct scaffold inspection", "Secure base plates", "Install cross-bracing"],
-        "timeline": "Week 2"
-    },
-    {
         "id": 10,
         "location": "Second floor",
         "activity": "Electrical work",
@@ -108,17 +86,6 @@
         "description": "Exposed electrical wiring during installation",
         "measures": ["Lockout/tagout procedures", "Use insulated tools", "PPE requirements"],
         "timeline": "Week 3-4"
-    },
-    {
-        "id": 11,
-        "location": "Basement",
-        "activity": "Plumbing installation",
-        "week": 2,
-        "hazard": "Confined space",
-        "hazardType": "asphyxiation",
-        "description": "Poor ventilation in utility tunnel during pipe work",
-        "measures": ["Atmospheric testing", "Forced ventilation", "Rescue equipment on standby"],
-        "timeline": "Week 2-3"
     },
     {
         "id": 12,
@@ -132,28 +99,6 @@
         "timeline": "Week 4"
     },
     {
-        "id": 13,
-        "location": "Parking area",
-        "activity": "Vehicle movement",
-        "week": 1,
-        "hazard": "Vehicle collision",
-        "hazardType": "struck by object",
-        "description": "Heavy equipment operating near workers",
-        "measures": ["Designated traffic routes", "Spotters for reversing", "High-visibility clothing"],
-        "timeline": "Week 1-5"
-    },
-    {
-        "id": 14,
-        "location": "Top floor",
-        "activity": "Steel erection",
-        "week": 2,
-        "hazard": "Falling objects",
-        "hazardType": "struck by object",
-        "description": "Tools and materials at risk of falling during steel work",
-        "measures": ["Tool tethering systems", "Toe boards on platforms", "Exclusion zones below work area"],
-        "timeline": "Week 2-3"
-    },
-    {
         "id": 15,
         "location": "Fourth floor",
         "activity": "Welding operations",
@@ -163,17 +108,6 @@
         "description": "Hot work near combustible materials",
         "measures": ["Hot work permits", "Fire watch requirements", "Remove combustibles"],
         "timeline": "Week 3"
-    },
-    {
-        "id": 16,
-        "location": "Basement",
-        "activity": "Waterproofing",
-        "week": 2,
-        "hazard": "Chemical exposure",
-        "hazardType": "chemical exposure",
-        "description": "Hazardous waterproofing chemicals with poor ventilation",
-        "measures": ["Respiratory protection", "Chemical-resistant gloves", "Adequate ventilation"],
-        "timeline": "Week 2-3"
     },
     {
         "id": 17,
@@ -187,39 +121,6 @@
         "timeline": "Week 1-5"
     },
     {
-        "id": 18,
-        "location": "Ground floor",
-        "activity": "Concrete cutting",
-        "week": 2,
-        "hazard": "Silica dust",
-        "hazardType": "respiratory hazard",
-        "description": "Silica dust generation during concrete cutting operations",
-        "measures": ["Water suppression systems", "Respirators required", "Dust extraction equipment"],
-        "timeline": "Week 2"
-    },
-    {
-        "id": 19,
-        "location": "Second floor",
-        "activity": "Demolition work",
-        "week": 1,
-        "hazard": "Structural instability",
-        "hazardType": "collapse",
-        "description": "Load-bearing walls being removed",
-        "measures": ["Structural engineer approval", "Temporary shoring", "Sequential demolition plan"],
-        "timeline": "Week 1-2"
-    },
-    {
-        "id": 20,
-        "location": "Third floor",
-        "activity": "Glazing installation",
-        "week": 4,
-        "hazard": "Glass handling",
-        "hazardType": "cuts/lacerations",
-        "description": "Large glass panels being installed at height",
-        "measures": ["Cut-resistant gloves", "Proper lifting equipment", "Glass storage racks"],
-        "timeline": "Week 4-5"
-    },
-    {
         "id": 21,
         "location": "Roof",
         "activity": "Solar panel installation",
@@ -231,39 +132,6 @@
         "timeline": "Week 5"
     },
     {
-        "id": 22,
-        "location": "Fourth floor",
-        "activity": "Painting operations",
-        "week": 4,
-        "hazard": "Chemical fumes",
-        "hazardType": "chemical exposure",
-        "description": "Paint fumes in enclosed spaces",
-        "measures": ["Mechanical ventilation", "Respirators as needed", "Low-VOC paint selection"],
-        "timeline": "Week 4-5"
-    },
-    {
-        "id": 23,
-        "location": "Main entrance",
-        "activity": "Temporary power setup",
-        "week": 1,
-        "hazard": "Electrical hazard",
-        "hazardType": "electrocution",
-        "description": "Temporary electrical distribution near wet conditions",
-        "measures": ["GFCI protection", "Elevated cable routing", "Weatherproof connections"],
-        "timeline": "Week 1"
-    },
-    {
-        "id": 24,
-        "location": "Basement",
-        "activity": "Sump pump installation",
-        "week": 3,
-        "hazard": "Water accumulation",
-        "hazardType": "drowning/slips",
-        "description": "Standing water creating slip hazards and potential flooding",
-        "measures": ["Dewatering pumps", "Non-slip surfaces", "Warning signs"],
-        "timeline": "Week 3"
-    },
-    {
         "id": 25,
         "location": "Top floor",
         "activity": "Elevator shaft work",
@@ -273,17 +141,6 @@
         "description": "Unprotected elevator shaft during installation",
         "measures": ["Shaft gates at all levels", "Safety barriers", "Fall protection equipment"],
         "timeline": "Week 3-4"
-    },
-    {
-        "id": 26,
-        "location": "Basement level",
-        "activity": "Foundation waterproofing",
-        "week": 2,
-        "hazard": "Confined space",
-        "hazardType": "oxygen deficiency",
-        "description": "Limited ventilation in basement excavation area",
-        "measures": ["Atmospheric monitoring", "Forced ventilation system", "Confined space entry permits", "Emergency rescue plan"],
-        "timeline": "Week 2-3"
     },
     {
         "id": 27,
@@ -308,28 +165,6 @@
         "timeline": "Week 12-13"
     },
     {
-        "id": 29,
-        "location": "Parking garage",
-        "activity": "Concrete floor grinding",
-        "week": 6,
-        "hazard": "Silica dust",
-        "hazardType": "respiratory hazard",
-        "description": "Concrete surface preparation generating crystalline silica",
-        "measures": ["Wet cutting methods", "HEPA vacuum systems", "Respiratory protection", "Air quality monitoring"],
-        "timeline": "Week 6-7"
-    },
-    {
-        "id": 30,
-        "location": "Main entrance",
-        "activity": "Revolving door installation",
-        "week": 14,
-        "hazard": "Pinch points",
-        "hazardType": "caught in machinery",
-        "description": "Moving parts during door assembly and testing",
-        "measures": ["Lockout/tagout procedures", "Machine guarding", "Training on equipment", "Controlled access area"],
-        "timeline": "Week 14"
-    },
-    {
         "id": 31,
         "location": "Stairwell",
         "activity": "Handrail welding",
@@ -339,17 +174,6 @@
         "description": "Welding operations near combustible materials",
         "measures": ["Hot work permits", "Fire watch personnel", "Fire extinguishers present", "Clear area of combustibles"],
         "timeline": "Week 9-10"
-    },
-    {
-        "id": 32,
-        "location": "Underground utilities",
-        "activity": "Service line connection",
-        "week": 1,
-        "hazard": "Underground utilities",
-        "hazardType": "electrocution/explosion",
-        "description": "Excavation near existing gas and electrical lines",
-        "measures": ["Utility locates completed", "Hand digging near utilities", "Emergency contact numbers posted", "Trained personnel only"],
-        "timeline": "Week 1-2"
     },
     {
         "id": 33,
@@ -363,17 +187,6 @@
         "timeline": "Week 11-12"
     },
     {
-        "id": 34,
-        "location": "Interior walls",
-        "activity": "Drywall installation",
-        "week": 10,
-        "hazard": "Repetitive motion",
-        "hazardType": "ergonomic injury",
-        "description": "Overhead work and repetitive lifting of materials",
-        "measures": ["Drywall lifts provided", "Job rotation", "Stretching programs", "Proper lifting techniques training"],
-        "timeline": "Week 10-12"
-    },
-    {
         "id": 35,
         "location": "Electrical room",
         "activity": "Main panel installation",
@@ -383,28 +196,6 @@
         "description": "Energized electrical work on main distribution panels",
         "measures": ["Arc flash PPE", "De-energize when possible", "Qualified electricians only", "Arc flash labels posted"],
         "timeline": "Week 13-14"
-    },
-    {
-        "id": 36,
-        "location": "Loading dock",
-        "activity": "Material delivery",
-        "week": 4,
-        "hazard": "Vehicle/pedestrian interaction",
-        "hazardType": "struck by vehicle",
-        "description": "Forklifts and delivery trucks operating in congested area",
-        "measures": ["Designated walkways", "Spotters for backing", "High-visibility clothing", "Speed limits enforced"],
-        "timeline": "Week 4-15"
-    },
-    {
-        "id": 37,
-        "location": "Exterior grounds",
-        "activity": "Excavator operations",
-        "week": 2,
-        "hazard": "Equipment rollover",
-        "hazardType": "struck by equipment",
-        "description": "Heavy equipment working on sloped terrain",
-        "measures": ["Ground stability assessment", "Exclusion zones established", "Qualified operators only", "Daily equipment inspections"],
-        "timeline": "Week 2-3"
     },
     {
         "id": 38,
@@ -418,17 +209,6 @@
         "timeline": "Week 15"
     },
     {
-        "id": 39,
-        "location": "Boiler room",
-        "activity": "Pressure vessel installation",
-        "week": 13,
-        "hazard": "High pressure systems",
-        "hazardType": "explosion hazard",
-        "description": "Installing and testing boilers and pressure vessels",
-        "measures": ["Manufacturer guidelines followed", "Pressure testing protocols", "Relief valves installed", "Certified inspections"],
-        "timeline": "Week 13-14"
-    },
-    {
         "id": 40,
         "location": "Floor 5",
         "activity": "Ceiling grid installation",
@@ -438,61 +218,6 @@
         "description": "Working from ladders and portable scaffolding overhead",
         "measures": ["Ladder safety training", "3-point contact maintained", "Scaffolding inspections", "Tool lanyards required"],
         "timeline": "Week 11-12"
-    },
-    {
-        "id": 41,
-        "location": "Site perimeter",
-        "activity": "Temporary fencing removal",
-        "week": 16,
-        "hazard": "Site security breach",
-        "hazardType": "unauthorized access",
-        "description": "Removal of barriers allowing public access to hazardous areas",
-        "measures": ["Phased removal plan", "Signage maintained", "Security personnel present", "Coordinate with site completion"],
-        "timeline": "Week 16"
-    },
-    {
-        "id": 42,
-        "location": "Restrooms",
-        "activity": "Plumbing rough-in",
-        "week": 7,
-        "hazard": "Confined workspace",
-        "hazardType": "struck by tools",
-        "description": "Multiple trades working in small restroom spaces",
-        "measures": ["Work coordination meetings", "Tool control procedures", "Clear communication", "PPE including hard hats"],
-        "timeline": "Week 7-8"
-    },
-    {
-        "id": 43,
-        "location": "Parking structure",
-        "activity": "Traffic striping",
-        "week": 15,
-        "hazard": "Chemical exposure",
-        "hazardType": "inhalation hazard",
-        "description": "Paint and chemical fumes in enclosed parking area",
-        "measures": ["Adequate ventilation", "Respiratory protection", "SDS sheets available", "Minimize personnel in area"],
-        "timeline": "Week 15"
-    },
-    {
-        "id": 44,
-        "location": "Lobby area",
-        "activity": "Terrazzo flooring",
-        "week": 14,
-        "hazard": "Slip hazard",
-        "hazardType": "slip/trip/fall",
-        "description": "Wet concrete and polishing compounds on floor surfaces",
-        "measures": ["Caution tape barriers", "Adequate signage", "Alternate routes provided", "Non-slip footwear required"],
-        "timeline": "Week 14-15"
-    },
-    {
-        "id": 45,
-        "location": "Generator yard",
-        "activity": "Backup generator testing",
-        "week": 14,
-        "hazard": "Noise exposure",
-        "hazardType": "hearing damage",
-        "description": "Extended equipment testing at high decibel levels",
-        "measures": ["Hearing protection required", "Noise monitoring", "Limited exposure time", "Warning signs posted"],
-        "timeline": "Week 14"
     },
     {
         "id": 46,
@@ -526,27 +251,5 @@
         "description": "Installing projectors and equipment from ceiling height",
         "measures": ["Tool tethers mandatory", "Area barricaded below", "Lifts used instead of ladders", "Material staging areas"],
         "timeline": "Week 14-15"
-    },
-    {
-        "id": 49,
-        "location": "Fire pump room",
-        "activity": "Fire suppression system testing",
-        "week": 15,
-        "hazard": "Water discharge",
-        "hazardType": "slip hazard/drowning",
-        "description": "High-volume water flow during system testing",
-        "measures": ["Drainage plan established", "Warning signs posted", "Restricted access during testing", "Emergency shutoff accessible"],
-        "timeline": "Week 15"
-    },
-    {
-        "id": 50,
-        "location": "Landscaping areas",
-        "activity": "Tree planting",
-        "week": 16,
-        "hazard": "Equipment tip-over",
-        "hazardType": "struck by equipment",
-        "description": "Tree spades and cranes working on soft ground",
-        "measures": ["Ground assessment", "Outrigger pads used", "Load charts followed", "Exclusion zones maintained"],
-        "timeline": "Week 16"
     }
 ]

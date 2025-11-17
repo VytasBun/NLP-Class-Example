@@ -18,7 +18,7 @@ with open("api/construction_database.json", "r") as f:
 def get_keywords(text):
     tokens = word_tokenize(text)
     tagged = pos_tag(tokens)
-    invalid = {'week', 'floor', 'hazard', 'activities', 'building', 'weeks'}
+    invalid = {'week', 'floor', 'hazard', 'activities', 'building', 'weeks', 'hazards'}
     keywords = [word.lower() for word, pos in tagged if pos.startswith("NN") and word not in invalid]
     return keywords
 
@@ -64,26 +64,22 @@ def search(text):
         item_week = str(item.get("week", ""))
         item_location = str(item.get("location", "")).lower()
 
-        if week is None:
-            week_match = True
-        else:
-            week_match = (item_week == str(week))
-
-        if not locations:
-            location_match = True
-        else:
-            location_match = any(loc in item_location for loc in locations)
-
-        if not keywords:
-            keyword_match = True
-        else:
+        if keywords:
             keyword_match = any(k in item_text for k in keywords)
+            if not keyword_match:
+                continue 
 
-        if week or locations:
-            if week_match and location_match:
-                results.append(item)
-        elif keyword_match:
-            results.append(item)
+        if locations:
+            location_match = any(loc in item_location for loc in locations)
+            if not location_match:
+                continue
+
+        if week is not None:
+            week_match = (item_week == str(week))
+            if not week_match:
+                continue
+
+        results.append(item)
 
     restrictions = {"week": week, "location": locations}
     return results, keywords, restrictions

@@ -18,7 +18,8 @@ with open("api/construction_database.json", "r") as f:
 def get_keywords(text):
     tokens = word_tokenize(text)
     tagged = pos_tag(tokens)
-    keywords = [word.lower() for word, pos in tagged if pos.startswith("NN")]
+    invalid = {'week', 'floor', 'hazard', 'activities', 'building', 'weeks'}
+    keywords = [word.lower() for word, pos in tagged if pos.startswith("NN") and word not in invalid]
     return keywords
 
 def find_week(text):
@@ -31,7 +32,6 @@ def find_week(text):
     
     if match:
         word = (match.group(1) or match.group(2)).lower()
-        word = re.sub(r'(st|nd|rd|th)$', '', word)
         
         if word in week_words:
             return week_words[word]

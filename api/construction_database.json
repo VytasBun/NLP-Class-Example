@@ -34,7 +34,7 @@
     },
     {
         "id": 5,
-        "location": "Basement",
+        "location": "First floor",
         "activity": "Foundation work",
         "week": 1,
         "hazard": "Reserved holes",
@@ -45,7 +45,7 @@
     },
     {
         "id": 6,
-        "location": "Ground floor",
+        "location": "First floor",
         "activity": "Excavation",
         "week": 1,
         "hazard": "Trench collapse",
@@ -67,7 +67,7 @@
     },
     {
         "id": 8,
-        "location": "Roof",
+        "location": "Fifth floor",
         "activity": "Roofing installation",
         "week": 4,
         "hazard": "Roof opening",
@@ -177,7 +177,7 @@
     },
     {
         "id": 33,
-        "location": "Penthouse level",
+        "location": "Fifth floor",
         "activity": "Cooling tower installation",
         "week": 11,
         "hazard": "Roof edge exposure",

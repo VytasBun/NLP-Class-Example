@@ -28,7 +28,7 @@
 
         {% if keywords %}
         <div class="results">
-          <h3>🧠 Extracted Nouns:</h3>
+          <h3>Extracted Keywords:</h3>
           <ul>
             {% for k in keywords %}
               <li>{{ k }}</li>
@@ -39,7 +39,7 @@
 
         {% if restrictions %}
         <div class="results restrictions">
-          <h3>📋 Restrictions:</h3>
+          <h3>Applied Restrictions:</h3>
           <ul>
             {% if restrictions.location %}
               <li><strong>Location:</strong> {{ restrictions.location }}</li>
@@ -53,7 +53,7 @@
 
         {% if results %}
         <div class="results">
-          <h3>🔍 Matching Hazards:</h3>
+          <h3>Matching Hazards:</h3>
           {% for item in results %}
           <div class="hazard-card">
         <div class="card-header">
